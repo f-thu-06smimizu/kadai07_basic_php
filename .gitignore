@@ -1,0 +1,20 @@
+# 依存ライブラリ (容量が大きく、プッシュすべきではないもの)
+node_modules/
+jspm_packages/
+
+# ビルド成果物
+dist/
+build/
+out/
+
+# 環境変数（パスワードや秘密鍵など）
+.env
+.env.local
+
+# OSが生成する一時ファイル
+.DS_Store
+Thumbs.db
+
+# エディタの設定ファイル
+.vscode/
+.idea/

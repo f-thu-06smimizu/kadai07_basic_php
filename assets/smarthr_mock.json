@@ -1,0 +1,20 @@
+[
+  {
+    "id": "sh001",
+    "name": "田中 太郎",
+    "department": "営業1課",
+    "position": "課長"
+  },
+  {
+    "id": "sh002",
+    "name": "佐藤 花子",
+    "department": "営業1課",
+    "position": "一般"
+  },
+  {
+    "id": "sh003",
+    "name": "鈴木 一郎",
+    "department": "営業2課",
+    "position": "一般"
+  }
+]

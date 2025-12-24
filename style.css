@@ -1,0 +1,48 @@
+/* --- 共通変数とリセット --- */
+:root { 
+    --sidebar-bg: #2c3e50; 
+    --sidebar-hover: #34495e;
+    --main-teal: #00a19a; 
+    --bg-light: #f4f7f6; 
+    --card-shadow: 0 4px 12px rgba(0,0,0,0.08); /* 影をより柔らかく、深く */
+}
+
+* { box-sizing: border-box; }
+body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif; margin: 0; background: var(--bg-light); color: #333; }
+
+/* --- レイアウト構造 --- */
+.main-layout { display: flex; width: 100%; min-height: 100vh; }
+.sidebar { width: 240px; background: var(--sidebar-bg); color: white; flex-shrink: 0; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; }
+.sidebar-logo { padding: 30px 20px; font-size: 1.3rem; font-weight: bold; color: var(--main-teal); text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.sidebar a { padding: 18px 25px; color: #bdc3c7; text-decoration: none; border-left: 4px solid transparent; transition: all 0.3s; }
+.sidebar a:hover, .sidebar a.active { background: var(--sidebar-hover); color: white; }
+.sidebar a.active { border-left-color: var(--main-teal); background: rgba(0, 161, 154, 0.1); }
+
+.main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.top-header { background: white; padding: 20px 30px; border-bottom: 1px solid #ddd; }
+.top-header h2 { margin: 0; font-size: 1.25rem; }
+.content-area { padding: 30px; }
+
+/* --- ホーム画面（カード型） --- */
+.staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
+.staff-card { background: white; border-radius: 12px; padding: 30px; text-align: center; text-decoration: none; color: inherit; display: block; box-shadow: var(--card-shadow); transition: transform 0.2s; }
+.staff-card:hover { transform: translateY(-5px); }
+.staff-avatar { width: 60px; height: 60px; background: #e0f2f1; color: var(--main-teal); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-weight: bold; font-size: 1.2rem; }
+
+/* --- ダッシュボード（数値カード＆グリッド） --- */
+.stat-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 30px; }
+.stat-card { background: white; padding: 25px; border-radius: 12px; box-shadow: var(--card-shadow); border: none; }
+.stat-label { display: block; font-size: 0.85rem; color: #7f8c8d; font-weight: bold; margin-bottom: 10px; }
+.stat-value { font-size: 2rem; font-weight: bold; margin: 0; }
+.stat-value.primary { color: var(--main-teal); }
+
+.dashboard-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 25px; align-items: start; }
+.card { background: white; padding: 25px; border-radius: 12px; box-shadow: var(--card-shadow); }
+.card h3 { margin-top: 0; margin-bottom: 20px; font-size: 1.1rem; border-left: 4px solid var(--main-teal); padding-left: 12px; }
+
+.chart-container { height: 320px; display: flex; justify-content: center; align-items: center; }
+
+/* テーブル美化 */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td { padding: 15px 12px; text-align: left; border-bottom: 1px solid #eee; }
+.data-table th { color: #7f8c8d; font-size: 0.8rem; text-transform: uppercase; }
