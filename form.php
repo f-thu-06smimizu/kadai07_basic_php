@@ -30,49 +30,48 @@ if (!$staff) {
 ?>
 
 <div class="top-header">
-    <h2>📝 評価アンケート入力 / <?= htmlspecialchars($staff['name']) ?> さん</h2>
+    <h2>📝 評価入力 / <?= htmlspecialchars($staff['name']) ?> さん</h2>
 </div>
 
 <div class="content-area">
     <div class="card">
         <form action="save.php" method="POST">
-            <input type="hidden" name="staff_id" value="<?= htmlspecialchars($staff['id']) ?>">
+            <input type="hidden" name="target_id" value="<?= htmlspecialchars($staff['id']) ?>">
             
             <div style="margin-bottom: 25px;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px;">あなたの立場（必須）</label>
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">評価者の立場</label>
                 <select name="relationship" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px;">
-                    <option value="">選択してください</option>
-                    <option value="上司">上司（1on1・定量/定性評価）</option>
-                    <option value="同僚">同僚（360度・定性アンケート）</option>
-                    <option value="部下">部下（360度・定性アンケート）</option>
+                    <option value="上司">上司</option>
+                    <option value="同僚">同僚</option>
+                    <option value="部下">部下</option>
                 </select>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
                 <div>
-                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">① KPI達成度（定量成果）</label>
-                    <input type="number" name="kpi_score" min="1" max="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">① 売上達成率 (%)</label>
+                    <input type="number" name="sales_attainment_rate" min="0" max="200" required style="width: 100%; padding: 10px; border: 1px solid #ddd;" placeholder="例: 105">
                 </div>
 
                 <div>
-                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">② バリュー体現（定性行動）</label>
-                    <input type="number" name="value_score" min="1" max="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">② 貢献利益 (円)</label>
+                    <input type="number" name="contribution_profit" required style="width: 100%; padding: 10px; border: 1px solid #ddd;" placeholder="例: 500000">
                 </div>
 
                 <div>
-                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">③ スキル・専門性</label>
-                    <input type="number" name="skill_score" min="1" max="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">③ 姿勢スコア (1-5)</label>
+                    <input type="number" name="score_attitude" min="1" max="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd;">
                 </div>
 
                 <div>
-                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">④ チーム貢献度</label>
-                    <input type="number" name="team_score" min="1" max="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">④ スキルスコア (1-5)</label>
+                    <input type="number" name="score_skill" min="1" max="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd;">
                 </div>
             </div>
 
             <div style="margin-bottom: 25px;">
                 <label style="display: block; font-weight: bold; margin-bottom: 8px;">評価の具体的根拠（自由記述）</label>
-                <textarea name="comment" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" placeholder="具体的な行動事例を記入してください"></textarea>
+                <textarea name="comment" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" placeholder="AI要約の元データになります"></textarea>
             </div>
 
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -84,11 +83,9 @@ if (!$staff) {
 </div>
 
 <?php 
-// 【レイアウト】共通フッター。Warning解消のためパスを確認。
 if (file_exists('includes/footer.php')) {
     include('includes/footer.php');
 } else {
-    // パスが通らない場合の予備終了タグ
     echo "</div></body></html>";
 }
 ?>

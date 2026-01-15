@@ -2,24 +2,25 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once('db_config.php');
-require_once('ai_functions.php'); // AI関数を読み込み
+// 設定ファイル読み込み（パスをincludesに修正）
+require_once('includes/db_config.php'); 
+require_once('includes/ai_functions.php'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // 送信データの受け取り（エラー回避のため??で空文字を代入）
+        $target_id    = $_POST['target_id'] ?? '';
+        $sales_rate   = $_POST['sales_attainment_rate'] ?? 0;
+        $profit       = $_POST['contribution_profit'] ?? 0;
+        $s_attitude   = $_POST['score_attitude'] ?? 0;
+        $s_skill      = $_POST['score_skill'] ?? 0;
+        $comment      = $_POST['comment'] ?? '';
+
         // --- 1. AI分析の実行 ---
-        // フォームから送られたコメントと数値を合体させてAIに渡す
-        $analysis_input = "
-            売上達成率: {$_POST['sales_attainment_rate']}%
-            姿勢スコア: {$_POST['score_attitude']}
-            スキルスコア: {$_POST['score_skill']}
-            上長コメント: {$_POST['comment']}
-        ";
-        
-        // AI要約を生成（ai_functions.phpの関数を呼び出し）
+        $analysis_input = "売上達成率:{$sales_rate}% 姿勢:{$s_attitude} スキル:{$s_skill} コメント:{$comment}";
         $ai_summary = getGeminiAnalysis($analysis_input);
 
-        // --- 2. SQLの準備（ai_summary カラムを追加） ---
+        // --- 2. データベースへの保存 ---
         $sql = "INSERT INTO evaluations (
                     target_id, 
                     sales_attainment_rate, 
@@ -41,21 +42,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 )";
         
         $stmt = $pdo->prepare($sql);
-
-        // スコア算出（100点満点ベースで計算しておくとダッシュボードと整合性が取れます）
-        $avg_score = ($_POST['score_attitude'] + $_POST['score_skill']) / 2;
+        $avg_score = ($s_attitude + $s_skill) / 2;
 
         $stmt->execute([
-            ':target_id'             => $_POST['target_id'],
-            ':sales_attainment_rate' => $_POST['sales_attainment_rate'],
-            ':contribution_profit'   => $_POST['contribution_profit'],
-            ':score_attitude'        => $_POST['score_attitude'],
-            ':score_skill'           => $_POST['score_skill'],
+            ':target_id'             => $target_id,
+            ':sales_attainment_rate' => $sales_rate,
+            ':contribution_profit'   => $profit,
+            ':score_attitude'        => $s_attitude,
+            ':score_skill'           => $s_skill,
             ':score'                 => $avg_score,
-            ':ai_summary'            => $ai_summary // AIの結果を保存
+            ':ai_summary'            => $ai_summary 
         ]);
 
-        header('Location: admin.php');
+        // --- 3. CSVファイルへの書き込み（課題要件） ---
+        $date = date('Y-m-d H:i:s');
+        $csv_line = "{$date},{$target_id},{$avg_score},{$comment}\n";
+
+        if (!file_exists('data')) {
+            mkdir('data', 0777, true);
+        }
+
+        $file = fopen('data/data.csv', 'a');
+        flock($file, LOCK_EX);
+        fwrite($file, $csv_line);
+        flock($file, LOCK_UN);
+        fclose($file);
+
+        // 保存成功したらリダイレクト
+        header('Location: index.php');
         exit;
 
     } catch (PDOException $e) {

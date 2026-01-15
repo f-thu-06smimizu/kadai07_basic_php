@@ -38,3 +38,22 @@
 ### 備考（感想、シェアしたいこと等なんでも） 
 データベースの連携（カラム名の不一致）やPHPの構文エラーで真っ白な画面になるなど苦戦しました。
 
+- 理想的な構成
+bonus-app/
+├── index.php (ホーム/対象者選択)
+├── dashboard.php (経営ダッシュボード)
+├── form.php (評価入力フォーム)
+├── save.php (保存処理)
+├── style.css 
+├── ai_functions.php (AI分析モック)
+├── includes/
+│   ├── db_config.php (DB接続設定)
+│   ├── header.php (サイドバー・共通ヘッダー)
+│   └── footer.php
+├── admin/
+│   ├── admin.php (管理設定)
+│   ├── staff_list.php
+│   └── staff_edit.php
+└── js/
+    ├── dashboard.js (円グラフ)
+    └── score_chart.js (棒グラフ)

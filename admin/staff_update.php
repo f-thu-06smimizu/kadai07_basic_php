@@ -1,5 +1,5 @@
 <?php
-require_once('includes/db_config.php'); // パスは環境に合わせて調整してください
+require_once('../includes/db_config.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // データの受け取りと型キャスト

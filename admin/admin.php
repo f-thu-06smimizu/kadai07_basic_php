@@ -7,10 +7,10 @@ try {
     $sql = "
         SELECT 
             s.id, s.name, s.department,
-            -- 上司(1on1)の平均点
-            AVG(CASE WHEN e.relationship = '上司' THEN e.total_score END) as boss_score,
-            -- 同僚・部下の平均点
-            AVG(CASE WHEN e.relationship IN ('同僚', '部下') THEN e.total_score END) as peer_score,
+            -- 上司の平均点 (total_score を score に変更)
+            AVG(CASE WHEN e.relationship = '上司' THEN e.score END) as boss_score,
+            -- 同僚・部下の平均点 (total_score を score に変更)
+            AVG(CASE WHEN e.relationship IN ('同僚', '部下') THEN e.score END) as peer_score,
             -- 総回答数
             COUNT(e.id) as response_count
         FROM staffs s

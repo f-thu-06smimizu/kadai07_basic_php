@@ -1,7 +1,7 @@
 <?php
-// セッション開始（CSRF対策等で必要になる場合が多い）
+// 従業員情報修正
 session_start();
-require_once('includes/db_config.php');
+require_once('../includes/db_config.php');
 
 // URLの id を取得
 $id = $_GET['id'] ?? null;
@@ -22,7 +22,7 @@ if (!$staff) {
 
 // ヘッダー読み込み
 $current_page = 'staff_list'; 
-include('includes/header.php'); 
+include('../includes/header.php');
 ?>
 
 <div class="main-container">
